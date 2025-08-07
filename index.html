@@ -8,6 +8,47 @@
     .slide {
       transition: opacity 0.5s;
     }
+
+    /* Styles pour la bannière et le message */
+    .banniere {
+      position: relative;
+      text-align: center;
+    }
+
+    .banniere-message {
+      position: absolute;
+      top: 50%;
+      left: 500px; /* Place à gauche avec un peu de marge */
+      transform: translateY(-50%);
+      font-size: 2.2rem;
+      color: #fff;
+      background-color: rgba(0,0,0,0.85); /* Fond bien opaque */
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      display: none;
+      text-align: left;
+      font-weight: bold;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+      z-index: 2;
+      min-width: 350px;
+      max-width: 90vw;
+    }
+
+    .banniere-message.show {
+      display: block; /* Affiché avec animation */
+      animation: slideIn 0.5s forwards;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
   </style>
 </head>
 <body>
@@ -17,13 +58,20 @@
     </div>
     <nav class="header-nav">
       <a 
-        href="https://www.google.com/maps/place/Paris" 
+        href="https://www.google.fr/maps/place/Garage+Saint-Georges+%2F+Renault/@48.8794557,2.3768798,19.75z/data=!4m6!3m5!1s0x47e66ddc60b3e281:0xcb3f70ae060bff34!8m2!3d48.8794783!4d2.3769278!16s%2Fg%2F11d_tnkxy5?hl=fr&entry=ttu&g_ep=EgoyMDI1MDgwNS4wIKXMDSoASAFQAw%3D%3D" 
         target="_blank" 
         class="emplacement-link"
       >
         Emplacement
       </a>
-      <a href="#" class="horaires-link">Horaires</a>
+      <div class="dropdown">
+        <a href="#" class="horaires-link">Horaires &#9662;</a>
+        <div class="dropdown-content">
+          <p>🕒 Lundi - Vendredi : XhX - XhX</p>
+          <p>🕒 Samedi : XhX - XhX</p>
+          <p>⛔ Dimanche : fermé</p>
+        </div>
+      </div>
       <div class="dropdown">
         <a href="#">Contact &#9662;</a>
         <div class="dropdown-content">
@@ -36,13 +84,21 @@
   <div class="header-separateur"></div>
   <section class="banniere">
     <img src="images/banniere.jpg" alt="Bannière du garage" />
+    <div class="banniere-message" id="banniere-message">Bienvenue au Garage Saint-Georges !</div>
   </section>
   <div class="banniere-separateur"></div>
   <section class="slider">
     <button class="slider-btn prev">&#10094;</button>
     <img src="images/garage1.jpg" alt="Garage photo 1" class="slide active" />
-    <img src="images/garage2.jpg" alt="Garage photo 2" class="slide" />
-    <img src="images/garage3.jpg" alt="Garage photo 3" class="slide" />
+    <img src="images/garage4.jpg" alt="Garage photo 4" class="slide" />
+    <img src="images/garage5.jpg" alt="Garage photo 5" class="slide" />
+    <img src="images/garage6.jpg" alt="Garage photo 6" class="slide" />
+    <img src="images/garage7.jpg" alt="Garage photo 7" class="slide" />
+    <img src="images/garage8.jpg" alt="Garage photo 8" class="slide" />
+    <img src="images/garage9.jpg" alt="Garage photo 9" class="slide" /> 
+    <img src="images/garage10.jpg" alt="Garage photo 10" class="slide" />
+    <img src="images/garage11.jpg" alt="Garage photo 11" class="slide" />
+    
     <button class="slider-btn next">&#10095;</button>
   </section>
 
@@ -58,6 +114,7 @@
   const prevBtn = document.querySelector('.slider-btn.prev');
   const nextBtn = document.querySelector('.slider-btn.next');
   let current = 0;
+  let autoSlideInterval;
 
   function showSlide(index) {
     slides.forEach((slide, i) => {
@@ -65,17 +122,37 @@
     });
   }
 
-  prevBtn.addEventListener('click', () => {
+  function nextSlide() {
+    current = (current === slides.length - 1) ? 0 : current + 1;
+    showSlide(current);
+  }
+
+  function prevSlide() {
     current = (current === 0) ? slides.length - 1 : current - 1;
     showSlide(current);
+  }
+
+  prevBtn.addEventListener('click', () => {
+    prevSlide();
+    resetAutoSlide();
   });
 
   nextBtn.addEventListener('click', () => {
-    current = (current === slides.length - 1) ? 0 : current + 1;
-    showSlide(current);
+    nextSlide();
+    resetAutoSlide();
   });
 
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(nextSlide, 5000);
+  }
+
+  function resetAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
+  }
+
   showSlide(current);
+  startAutoSlide();
 
   // Lightbox JS
   const lightbox = document.getElementById('lightbox');
@@ -102,12 +179,17 @@
       lightboxImg.src = "";
     }
   });
+
+  // Animation du message de bienvenue sur la bannière
+  window.addEventListener('DOMContentLoaded', () => {
+    const msg = document.getElementById('banniere-message');
+    setTimeout(() => {
+      msg.classList.add('show');
+    }, 400); // délai avant apparition
+  });
   </script>
   
   <main>
-    <h2>Bienvenue !</h2>
-    <p>Mon site est maintenant en ligne sur Github Pages ! 🎉</p>
-    <p>Le site est en construction, merci de patienter.</p>
   </main>
 </body>
 </html>
