@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <title>Garage</title>
+  <style>
+    .slide {
+      transition: opacity 0.5s;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-corner">
+      <img src="images/logo.png" alt="Logo Renault" />
+    </div>
+    <nav class="header-nav">
+      <a 
+        href="https://www.google.com/maps/place/Paris" 
+        target="_blank" 
+        class="emplacement-link"
+      >
+        Emplacement
+      </a>
+      <a href="#" class="horaires-link">Horaires</a>
+      <div class="dropdown">
+        <a href="#">Contact &#9662;</a>
+        <div class="dropdown-content">
+          <p>📞 01 23 45 67 89</p>
+          <p>✉️ contact@garage.fr</p>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <div class="header-separateur"></div>
+  <section class="banniere">
+    <img src="images/banniere.jpg" alt="Bannière du garage" />
+  </section>
+  <div class="banniere-separateur"></div>
+  <section class="slider">
+    <button class="slider-btn prev">&#10094;</button>
+    <img src="images/garage1.jpg" alt="Garage photo 1" class="slide active" />
+    <img src="images/garage2.jpg" alt="Garage photo 2" class="slide" />
+    <img src="images/garage3.jpg" alt="Garage photo 3" class="slide" />
+    <button class="slider-btn next">&#10095;</button>
+  </section>
+
+  <!-- Lightbox HTML -->
+  <div id="lightbox" style="display:none;">
+    <span id="lightbox-close">&times;</span>
+    <img id="lightbox-img" src="" alt="Agrandissement" />
+  </div>
+
+  <script>
+  // Slider JS (déjà présent)
+  const slides = document.querySelectorAll('.slide');
+  const prevBtn = document.querySelector('.slider-btn.prev');
+  const nextBtn = document.querySelector('.slider-btn.next');
+  let current = 0;
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+  }
+
+  prevBtn.addEventListener('click', () => {
+    current = (current === 0) ? slides.length - 1 : current - 1;
+    showSlide(current);
+  });
+
+  nextBtn.addEventListener('click', () => {
+    current = (current === slides.length - 1) ? 0 : current + 1;
+    showSlide(current);
+  });
+
+  showSlide(current);
+
+  // Lightbox JS
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxClose = document.getElementById('lightbox-close');
+
+  slides.forEach(slide => {
+    slide.style.cursor = "zoom-in";
+    slide.addEventListener('click', () => {
+      lightboxImg.src = slide.src;
+      lightbox.style.display = "flex";
+    });
+  });
+
+  lightboxClose.addEventListener('click', () => {
+    lightbox.style.display = "none";
+    lightboxImg.src = "";
+  });
+
+  // Fermer la lightbox en cliquant en dehors de l'image
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      lightbox.style.display = "none";
+      lightboxImg.src = "";
+    }
+  });
+  </script>
+  
+  <main>
+    <h2>Bienvenue !</h2>
+    <p>Mon site est maintenant en ligne sur Github Pages ! 🎉</p>
+    <p>Le site est en construction, merci de patienter.</p>
+  </main>
+</body>
+</html>
